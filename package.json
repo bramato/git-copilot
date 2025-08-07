@@ -1,6 +1,6 @@
 {
   "name": "@bramatom/git-copilot",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "AI-powered Git analysis and documentation tool using OpenRouter agents",
   "main": "bin/git-copilot.js",
   "bin": {
@@ -36,7 +36,8 @@
     "commander": "^9.0.0",
     "chalk": "^4.1.2",
     "ora": "^5.4.1",
-    "fs-extra": "^11.0.0"
+    "fs-extra": "^11.0.0",
+    "inquirer": "^8.2.6"
   },
   "engines": {
     "node": ">=14.0.0"
