@@ -91,7 +91,7 @@ class CodeReviewExpert {
                 const fileAnalysis = {
                     file,
                     content,
-                    lines: content.split('\\n'),
+                    lines: content.split('\n'),
                     size: content.length,
                     issues: []
                 };
@@ -113,7 +113,7 @@ class CodeReviewExpert {
 
     checkCommonIssues(content, file) {
         const issues = [];
-        const lines = content.split('\\n');
+        const lines = content.split('\n');
 
         // Check for console.log statements
         lines.forEach((line, index) => {
@@ -142,7 +142,7 @@ class CodeReviewExpert {
         });
 
         // Check for long functions (> 50 lines)
-        const functionRegex = /function\\s+\\w+|const\\s+\\w+\\s*=\\s*\\(|\\w+\\s*:\\s*function|class\\s+\\w+/g;
+        const functionRegex = /function\s+\w+|const\s+\w+\s*=\s*\(|^\s*\w+\s*:\s*function|class\s+\w+/g;
         let currentFunction = null;
         let functionStartLine = 0;
         let braceCount = 0;
@@ -155,8 +155,8 @@ class CodeReviewExpert {
             }
 
             if (currentFunction) {
-                braceCount += (line.match(/\\{/g) || []).length;
-                braceCount -= (line.match(/\\}/g) || []).length;
+                braceCount += (line.match(/\{/g) || []).length;
+                braceCount -= (line.match(/\}/g) || []).length;
 
                 if (braceCount === 0 && (index - functionStartLine + 1) > 50) {
                     issues.push({
@@ -176,14 +176,14 @@ class CodeReviewExpert {
 
     checkSecurity(content, file) {
         const issues = [];
-        const lines = content.split('\\n');
+        const lines = content.split('\n');
 
         // Check for hardcoded secrets
         const secretPatterns = [
-            /password\\s*[=:]\\s*[\"'][^\"']+[\"']/i,
-            /api[_-]?key\\s*[=:]\\s*[\"'][^\"']+[\"']/i,
-            /secret\\s*[=:]\\s*[\"'][^\"']+[\"']/i,
-            /token\\s*[=:]\\s*[\"'][^\"']+[\"']/i
+            /password\s*[=:]\s*["'][^"']+["']/i,
+            /api[_-]?key\s*[=:]\s*["'][^"']+["']/i,
+            /secret\s*[=:]\s*["'][^"']+["']/i,
+            /token\s*[=:]\s*["'][^"']+["']/i
         ];
 
         lines.forEach((line, index) => {
@@ -205,7 +205,7 @@ class CodeReviewExpert {
             issues.push({
                 type: 'error',
                 category: 'Security',
-                line: content.split('\\n').findIndex(line => line.includes('eval(')) + 1,
+                line: content.split('\n').findIndex(line => line.includes('eval(')) + 1,
                 message: 'Use of eval() is dangerous and should be avoided',
                 severity: 'high'
             });
@@ -216,7 +216,7 @@ class CodeReviewExpert {
 
     checkPerformance(content, file) {
         const issues = [];
-        const lines = content.split('\\n');
+        const lines = content.split('\n');
 
         // Check for synchronous file operations
         const syncMethods = ['readFileSync', 'writeFileSync', 'existsSync'];
@@ -259,11 +259,11 @@ class CodeReviewExpert {
 
     checkMaintainability(content, file) {
         const issues = [];
-        const lines = content.split('\\n');
+        const lines = content.split('\n');
 
         // Check for magic numbers
         lines.forEach((line, index) => {
-            const numbers = line.match(/\\b(\\d{2,})\\b/g);
+            const numbers = line.match(/\b(\d{2,})\b/g);
             if (numbers && !line.trim().startsWith('//')) {
                 numbers.forEach(num => {
                     if (parseInt(num) > 1 && parseInt(num) !== 100 && parseInt(num) !== 1000) {
@@ -280,7 +280,7 @@ class CodeReviewExpert {
         });
 
         // Check for long parameter lists
-        const functionRegex = /function\\s*\\([^)]+\\)|\\([^)]+\\)\\s*=>/g;
+        const functionRegex = /function\s*\([^)]+\)|\([^)]+\)\s*=>/g;
         lines.forEach((line, index) => {
             const matches = line.match(functionRegex);
             if (matches) {

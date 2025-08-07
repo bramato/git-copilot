@@ -1,6 +1,6 @@
 {
   "name": "@bramatom/git-copilot",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "AI-powered Git analysis and documentation tool using OpenRouter agents",
   "main": "bin/git-copilot.js",
   "bin": {
