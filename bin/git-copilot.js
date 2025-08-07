@@ -2,94 +2,132 @@
 
 const { Command } = require('commander');
 const chalk = require('chalk');
-const figlet = require('figlet');
-const { GitChecker } = require('../src/utils/git-checker');
-const { AnalyzeBranchCommand } = require('../src/commands/analyze-branch');
-const { DocumentationCommand } = require('../src/commands/documentation');
-const { ReviewCommand } = require('../src/commands/review');
+const { execSync } = require('child_process');
+const fs = require('fs-extra');
+const path = require('path');
 
 const program = new Command();
 
-// Display banner
-console.log(
-  chalk.cyan(
-    figlet.textSync('Git Copilot', { horizontalLayout: 'full' })
-  )
-);
+// ASCII Art for missing git
+const ASCII_ART = `
+ ____  _            ____  _            
+|  _ \\(_)_ __ _   _|  _ \\(_)_ __ _   _ 
+| |_) | | '__| | | | |_) | | '__| | | |
+|  __/| | |  | |_| |  __/| | |  | |_| |
+|_|   |_|_|   \\__,_|_|   |_|_|   \\__,_|
+                                       
+GIT NON È INSTALLATO! 
+Installa Git prima di continuare.
+`;
 
-console.log(chalk.gray('AI-powered Git analysis and code review tool\n'));
+// Check if git is installed
+function checkGitInstalled() {
+    try {
+        execSync('git --version', { stdio: 'ignore' });
+        return true;
+    } catch (error) {
+        console.log(chalk.red(ASCII_ART));
+        process.exit(1);
+    }
+}
 
-// Check if git is installed before running any commands
-async function checkGitInstallation() {
-  const gitChecker = new GitChecker();
-  const isGitInstalled = await gitChecker.isGitInstalled();
-  
-  if (!isGitInstalled) {
-    gitChecker.showGitNotInstalledMessage();
-    process.exit(1);
-  }
+// Load agents
+function loadAgent(agentType) {
+    try {
+        const agentPath = path.join(__dirname, '..', 'agents', `${agentType}.js`);
+        if (fs.existsSync(agentPath)) {
+            return require(agentPath);
+        }
+        throw new Error(`Agent ${agentType} not found`);
+    } catch (error) {
+        console.error(chalk.red(`Error loading agent ${agentType}:`, error.message));
+        process.exit(1);
+    }
+}
+
+// Read documentation files
+function readDocumentationRules() {
+    const rules = {
+        readme: '',
+        kb: ''
+    };
+    
+    if (fs.existsSync('README.md')) {
+        rules.readme = fs.readFileSync('README.md', 'utf8');
+    }
+    
+    if (fs.existsSync('KB.md')) {
+        rules.kb = fs.readFileSync('KB.md', 'utf8');
+    }
+    
+    return rules;
 }
 
 program
-  .name('git-copilot')
-  .description('AI-powered Git analysis and code review CLI tool')
-  .version('1.0.0');
+    .name('git-copilot')
+    .description('AI-powered Git analysis and documentation tool')
+    .version('1.0.0');
 
 program
-  .command('analyze-branch')
-  .alias('analyze')
-  .description('Analyze current git branch for changes and improvements')
-  .option('-b, --branch <branch>', 'specify branch to analyze (default: current)')
-  .option('-v, --verbose', 'show detailed analysis')
-  .action(async (options) => {
-    await checkGitInstallation();
-    const command = new AnalyzeBranchCommand();
-    await command.execute(options);
-  });
+    .command('analyze-branch')
+    .description('Analyze current branch changes using AI')
+    .action(async () => {
+        checkGitInstalled();
+        console.log(chalk.blue('🔍 Analyzing branch changes...'));
+        
+        try {
+            const gitAgent = loadAgent('pr-git-expert');
+            const result = await gitAgent.analyzeBranch();
+            console.log(chalk.green('✅ Analysis complete!'));
+            console.log(result);
+        } catch (error) {
+            console.error(chalk.red('❌ Error during analysis:', error.message));
+        }
+    });
 
 program
-  .command('document')
-  .alias('doc')
-  .description('Create or update project documentation')
-  .option('-f, --force', 'force update existing documentation')
-  .option('-t, --type <type>', 'documentation type (readme, api, changelog)', 'readme')
-  .action(async (options) => {
-    await checkGitInstallation();
-    const command = new DocumentationCommand();
-    await command.execute(options);
-  });
+    .command('document')
+    .description('Create or update documentation')
+    .action(async () => {
+        checkGitInstalled();
+        console.log(chalk.blue('📝 Generating documentation...'));
+        
+        try {
+            const docAgent = loadAgent('documentation-expert');
+            const rules = readDocumentationRules();
+            const result = await docAgent.generateDocumentation(rules);
+            console.log(chalk.green('✅ Documentation updated!'));
+            console.log(result);
+        } catch (error) {
+            console.error(chalk.red('❌ Error generating documentation:', error.message));
+        }
+    });
 
 program
-  .command('review')
-  .description('Generate code review and create fix.md file')
-  .option('-p, --path <path>', 'specific file or directory to review')
-  .option('-s, --staged', 'review only staged changes')
-  .action(async (options) => {
-    await checkGitInstallation();
-    const command = new ReviewCommand();
-    await command.execute(options);
-  });
+    .command('review')
+    .description('Review code and generate fix.md')
+    .action(async () => {
+        checkGitInstalled();
+        console.log(chalk.blue('🔍 Reviewing code...'));
+        
+        try {
+            const reviewAgent = loadAgent('code-review-expert');
+            const rules = readDocumentationRules();
+            const result = await reviewAgent.reviewCode(rules);
+            
+            // Create fix.md
+            fs.writeFileSync('fix.md', result.fixes);
+            console.log(chalk.green('✅ Code review complete! Check fix.md for issues.'));
+        } catch (error) {
+            console.error(chalk.red('❌ Error during code review:', error.message));
+        }
+    });
 
-program
-  .command('init')
-  .description('Initialize git-copilot in current repository')
-  .action(async () => {
-    await checkGitInstallation();
-    console.log(chalk.green('Initializing git-copilot...'));
-    // TODO: Add initialization logic
-  });
-
-// Handle unknown commands
-program.on('command:*', function (operands) {
-  console.error(chalk.red(`Unknown command: ${operands[0]}`));
-  console.log(chalk.yellow('Run "git-copilot --help" to see available commands'));
-  process.exitCode = 1;
-});
-
-// Parse command line arguments
-program.parse();
-
-// If no command is provided, show help
-if (!process.argv.slice(2).length) {
-  program.outputHelp();
+// Default command
+if (process.argv.length === 2 || process.argv[2] === 'analyze-branch') {
+    checkGitInstalled();
+    console.log(chalk.blue('🔍 Running analyze-branch by default...'));
+    program.parse(['node', 'git-copilot', 'analyze-branch']);
+} else {
+    program.parse();
 }
