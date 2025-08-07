@@ -2,19 +2,19 @@
 Generated: 2025-08-07
 
 ## Summary
-Total issues found: 183
+Total issues found: 202
 
 ### Issues by Severity
 - 🔴 High: 5
 - 🟡 Medium: 31
-- 🟢 Low: 143
+- 🟢 Low: 162
 - ℹ️ Info: 4
 
 ## Issues by Category
 
 ### Security (5 issues)
 
-🔴 **code-review-expert.js:204**
+🔴 **code-review-expert.js:248**
 Use of eval() is dangerous and should be avoided
 
 🔴 **documentation-expert.js:213**
@@ -32,7 +32,7 @@ Possible hardcoded secret detected. Use environment variables instead.
 
 ### Code Complexity (8 issues)
 
-🟡 **code-review-expert.js:165**
+🟡 **code-review-expert.js:209**
 Function is too long (61 lines). Consider breaking it down.
 
 🟡 **documentation-expert.js:4**
@@ -59,31 +59,31 @@ Function is too long (56 lines). Consider breaking it down.
 
 ### Performance (23 issues)
 
-🟡 **code-review-expert.js:222**
+🟡 **code-review-expert.js:266**
 Synchronous readFileSync call may block the event loop. Consider using async version.
 
-🟡 **code-review-expert.js:222**
+🟡 **code-review-expert.js:266**
 Synchronous writeFileSync call may block the event loop. Consider using async version.
 
-🟡 **code-review-expert.js:222**
+🟡 **code-review-expert.js:266**
 Synchronous existsSync call may block the event loop. Consider using async version.
 
-🟡 **code-review-expert.js:125**
+🟡 **code-review-expert.js:169**
 Deeply nested loops detected. Consider optimizing algorithm complexity.
 
-🟡 **code-review-expert.js:190**
+🟡 **code-review-expert.js:234**
 Deeply nested loops detected. Consider optimizing algorithm complexity.
 
-🟡 **code-review-expert.js:224**
+🟡 **code-review-expert.js:268**
 Deeply nested loops detected. Consider optimizing algorithm complexity.
 
-🟡 **code-review-expert.js:240**
+🟡 **code-review-expert.js:284**
 Deeply nested loops detected. Consider optimizing algorithm complexity.
 
-🟡 **code-review-expert.js:287**
+🟡 **code-review-expert.js:331**
 Deeply nested loops detected. Consider optimizing algorithm complexity.
 
-🟡 **code-review-expert.js:399**
+🟡 **code-review-expert.js:458**
 Deeply nested loops detected. Consider optimizing algorithm complexity.
 
 🟡 **documentation-expert.js:308**
@@ -134,7 +134,7 @@ Synchronous writeFileSync call may block the event loop. Consider using async ve
 🟢 **.eslintrc.js:14**
 Magic number 2020 found. Consider using a named constant.
 
-🟢 **code-review-expert.js:161**
+🟢 **code-review-expert.js:205**
 Magic number 50 found. Consider using a named constant.
 
 🟢 **documentation-expert.js:204**
@@ -192,12 +192,69 @@ Magic number 50 found. Consider using a named constant.
 Magic number 50 found. Consider using a named constant.
 
 
-### Debug Code (123 issues)
+### Debug Code (142 issues)
 
-🟢 **code-review-expert.js:120**
+🟢 **code-review-expert.js:50**
 Console.log statement found - consider removing for production
 
-🟢 **code-review-expert.js:391**
+🟢 **code-review-expert.js:63**
+Console.log statement found - consider removing for production
+
+🟢 **code-review-expert.js:67**
+Console.log statement found - consider removing for production
+
+🟢 **code-review-expert.js:69**
+Console.log statement found - consider removing for production
+
+🟢 **code-review-expert.js:115**
+Console.log statement found - consider removing for production
+
+🟢 **code-review-expert.js:123**
+Console.log statement found - consider removing for production
+
+🟢 **code-review-expert.js:143**
+Console.log statement found - consider removing for production
+
+🟢 **code-review-expert.js:145**
+Console.log statement found - consider removing for production
+
+🟢 **code-review-expert.js:150**
+Console.log statement found - consider removing for production
+
+🟢 **code-review-expert.js:154**
+Console.log statement found - consider removing for production
+
+🟢 **code-review-expert.js:164**
+Console.log statement found - consider removing for production
+
+🟢 **code-review-expert.js:370**
+Console.log statement found - consider removing for production
+
+🟢 **code-review-expert.js:371**
+Console.log statement found - consider removing for production
+
+🟢 **code-review-expert.js:372**
+Console.log statement found - consider removing for production
+
+🟢 **code-review-expert.js:373**
+Console.log statement found - consider removing for production
+
+🟢 **code-review-expert.js:374**
+Console.log statement found - consider removing for production
+
+🟢 **code-review-expert.js:375**
+Console.log statement found - consider removing for production
+
+🟢 **code-review-expert.js:376**
+Console.log statement found - consider removing for production
+
+🟢 **code-review-expert.js:377**
+Console.log statement found - consider removing for production
+
+🟢 **code-review-expert.js:378**
+Console.log statement found - consider removing for production
+
+🟢 **code-review-expert.js:450**
 Console.log statement found - consider removing for production
 
 🟢 **git-copilot.js:29**
@@ -566,23 +623,23 @@ Console.log statement found - consider removing for production
 
 ### TODO/FIXME (4 issues)
 
-ℹ️ **code-review-expert.js:131**
+ℹ️ **code-review-expert.js:175**
 TODO or FIXME comment found
 
-ℹ️ **code-review-expert.js:133**
+ℹ️ **code-review-expert.js:177**
 TODO or FIXME comment found
 
-ℹ️ **code-review-expert.js:136**
+ℹ️ **code-review-expert.js:180**
 TODO or FIXME comment found
 
-ℹ️ **code-review-expert.js:138**
+ℹ️ **code-review-expert.js:182**
 TODO or FIXME comment found
 
 
 ## Recommendations
 
 ### High Priority Fixes
-1. **code-review-expert.js:204** - Use of eval() is dangerous and should be avoided
+1. **code-review-expert.js:248** - Use of eval() is dangerous and should be avoided
 1. **documentation-expert.js:213** - Possible hardcoded secret detected. Use environment variables instead.
 1. **analyze-branch.js:54** - Possible hardcoded secret detected. Use environment variables instead.
 1. **documentation.js:75** - Possible hardcoded secret detected. Use environment variables instead.

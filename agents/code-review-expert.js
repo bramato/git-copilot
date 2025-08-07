@@ -1,6 +1,7 @@
 const fs = require('fs-extra');
 const path = require('path');
 const { execSync } = require('child_process');
+const chalk = require('chalk');
 
 class CodeReviewExpert {
     constructor() {
@@ -46,6 +47,8 @@ class CodeReviewExpert {
         const codeFiles = [];
         const excludeDirs = ['node_modules', '.git', 'dist', 'build', '.next'];
 
+        console.log(chalk.blue('🔍 Cercando file di codice...'));
+
         try {
             const files = await this.walkDirectory('.', excludeDirs);
             for (const file of files) {
@@ -57,7 +60,31 @@ class CodeReviewExpert {
             console.warn('Error reading code files:', error.message);
         }
 
+        console.log(chalk.green(`📁 Trovati ${codeFiles.length} file di codice:`));
+        codeFiles.forEach(file => {
+            const ext = path.extname(file);
+            const icon = this.getFileIcon(ext);
+            console.log(`   ${icon} ${chalk.gray(file)}`);
+        });
+        console.log('');
+
         return codeFiles;
+    }
+
+    getFileIcon(extension) {
+        const icons = {
+            '.js': '🟨',
+            '.ts': '🔷',
+            '.jsx': '⚛️',
+            '.tsx': '⚛️',
+            '.py': '🐍',
+            '.java': '☕',
+            '.cpp': '⚙️',
+            '.c': '⚙️',
+            '.go': '🐹',
+            '.rs': '🦀'
+        };
+        return icons[extension] || '📄';
     }
 
     async walkDirectory(dir, exclude = []) {
@@ -85,7 +112,16 @@ class CodeReviewExpert {
     async analyzeFiles(codeFiles) {
         const analysis = [];
 
-        for (const file of codeFiles) {
+        console.log(chalk.blue('📊 Iniziando analisi dei file...'));
+
+        for (let i = 0; i < codeFiles.length; i++) {
+            const file = codeFiles[i];
+            const progress = `(${i + 1}/${codeFiles.length})`;
+            const ext = path.extname(file);
+            const icon = this.getFileIcon(ext);
+            
+            console.log(`   ${icon} ${chalk.cyan(progress)} Analizzando ${chalk.yellow(path.basename(file))}...`);
+            
             try {
                 const content = await fs.readFile(file, 'utf8');
                 const fileAnalysis = {
@@ -102,12 +138,20 @@ class CodeReviewExpert {
                 fileAnalysis.issues.push(...this.checkPerformance(content, file));
                 fileAnalysis.issues.push(...this.checkMaintainability(content, file));
 
+                const issueCount = fileAnalysis.issues.length;
+                if (issueCount > 0) {
+                    console.log(`     ${chalk.red('⚠️')} ${issueCount} problemi trovati`);
+                } else {
+                    console.log(`     ${chalk.green('✅')} Nessun problema rilevato`);
+                }
+
                 analysis.push(fileAnalysis);
             } catch (error) {
-                console.warn(`Could not analyze file ${file}:`, error.message);
+                console.log(`     ${chalk.red('❌')} Errore durante la lettura: ${error.message}`);
             }
         }
 
+        console.log('');
         return analysis;
     }
 
@@ -317,6 +361,21 @@ class CodeReviewExpert {
         // Sort by severity
         const severityOrder = { high: 0, medium: 1, low: 2, info: 3 };
         allIssues.sort((a, b) => severityOrder[a.severity] - severityOrder[b.severity]);
+
+        // Show summary
+        const totalFiles = analysis.length;
+        const filesWithIssues = analysis.filter(f => f.issues.length > 0).length;
+        const stats = this.getStats(allIssues);
+        
+        console.log(chalk.blue('📋 Riepilogo analisi:'));
+        console.log(`   📁 File analizzati: ${chalk.cyan(totalFiles)}`);
+        console.log(`   ⚠️  File con problemi: ${chalk.yellow(filesWithIssues)}`);
+        console.log(`   🔴 Problemi critici: ${chalk.red(stats.high)}`);
+        console.log(`   🟡 Problemi medi: ${chalk.yellow(stats.medium)}`);
+        console.log(`   🟢 Problemi minori: ${chalk.green(stats.low)}`);
+        console.log(`   ℹ️  Note informative: ${chalk.blue(stats.info)}`);
+        console.log(`   📊 Totale problemi: ${chalk.magenta(stats.total)}`);
+        console.log('');
 
         return allIssues;
     }
