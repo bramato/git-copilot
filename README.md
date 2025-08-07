@@ -2,8 +2,8 @@
 
 > **Transform your Git workflow with AI-powered analysis, documentation, and code review**
 
-[![npm version](https://badge.fury.io/js/git-copilot.svg)](https://badge.fury.io/js/git-copilot)
-[![Downloads](https://img.shields.io/npm/dm/git-copilot.svg)](https://npmjs.org/package/git-copilot)
+[![npm version](https://badge.fury.io/js/@bramatom/git-copilot.svg)](https://badge.fury.io/js/@bramatom/git-copilot)
+[![Downloads](https://img.shields.io/npm/dm/@bramatom/git-copilot.svg)](https://npmjs.org/package/@bramatom/git-copilot)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Node.js CI](https://github.com/bramato/git-copilot/workflows/Node.js%20CI/badge.svg)](https://github.com/bramato/git-copilot/actions)
 [![Node.js Version](https://img.shields.io/node/v/git-copilot.svg)](https://nodejs.org)
@@ -47,19 +47,19 @@ Choose your preferred installation method:
 ### 🌟 Global Installation (Recommended)
 Install once, use everywhere:
 ```bash
-npm install -g git-copilot
+npm install -g @bramatom/git-copilot
 ```
 
 ### 📁 Local Project Installation  
 For project-specific usage:
 ```bash
-npm install git-copilot --save-dev
+npm install @bramatom/git-copilot --save-dev
 ```
 
 ### ⚡ One-time Usage with npx
 Try without installing:
 ```bash
-npx git-copilot [command]
+npx @bramatom/git-copilot [command]
 ```
 
 ### 📋 Requirements
@@ -552,7 +552,7 @@ MIT License - Free for commercial and personal use
 ### 🚀 Ready to Transform Your Git Workflow?
 
 ```bash
-npm install -g git-copilot
+npm install -g @bramatom/git-copilot
 ```
 
 **Made with 💜 by [bramato](https://github.com/bramato) and the open source community**

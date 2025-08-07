@@ -1,5 +1,5 @@
 {
-  "name": "git-copilot",
+  "name": "@bramatom/git-copilot",
   "version": "1.0.0",
   "description": "AI-powered Git analysis and documentation tool using OpenRouter agents",
   "main": "bin/git-copilot.js",
@@ -25,7 +25,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bramato/git-copilot.git"
+    "url": "git+https://github.com/bramato/git-copilot.git"
   },
   "bugs": {
     "url": "https://github.com/bramato/git-copilot/issues"
