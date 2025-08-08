@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+require('dotenv').config();
+
 const { Command } = require('commander');
 const chalk = require('chalk');
 const { execSync } = require('child_process');
